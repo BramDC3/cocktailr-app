@@ -1,6 +1,7 @@
 import 'package:cocktailr/src/exceptions/exceptions.dart';
 import 'package:cocktailr/src/julep_api/julep_api.dart';
 import 'package:cocktailr/src/utils/utils.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
 import '../domain/models/cocktail.dart';
@@ -21,7 +22,7 @@ class CocktailRepository {
       client: _client,
       uri: _api.cocktails(),
       builder: (cocktailsJson) {
-        if (cocktailsJson is! List<Map<String, dynamic>>) {
+        if (cocktailsJson is! List) {
           throw InvalidJsonException();
         }
 
@@ -30,3 +31,11 @@ class CocktailRepository {
     );
   }
 }
+
+final cocktailRepositoryProvider = Provider<CocktailRepository>((ref) {
+  return CocktailRepository(
+    JulepApi(),
+    http.Client(),
+    ref.watch(apiHelperProvider),
+  );
+});

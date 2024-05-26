@@ -10,7 +10,7 @@ Cocktail _$CocktailFromJson(Map<String, dynamic> json) => Cocktail(
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       recipe: json['recipe'] as String,
-      imageUri: json['imageUri'] as String,
+      imageUri: json['imageURI'] as String,
       history: json['history'] as String,
       ingredients: (json['ingredients'] as List<dynamic>)
           .map((e) => Ingredient.fromJson(e as Map<String, dynamic>))
@@ -21,7 +21,7 @@ Map<String, dynamic> _$CocktailToJson(Cocktail instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'recipe': instance.recipe,
-      'imageUri': instance.imageUri,
+      'imageURI': instance.imageUri,
       'history': instance.history,
       'ingredients': instance.ingredients,
     };

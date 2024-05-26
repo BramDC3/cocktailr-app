@@ -9,13 +9,13 @@ part 'ingredient.g.dart';
 class Ingredient extends Equatable {
   const Ingredient({
     required this.name,
-    required this.quantity,
-    required this.unit,
+    this.quantity,
+    this.unit,
   });
 
   final String name;
-  final String quantity;
-  final Unit unit;
+  final Object? quantity; // TODO: this is sometimes a double and sometimes a String
+  final Unit? unit;
 
   factory Ingredient.fromJson(Map<String, dynamic> json) => _$IngredientFromJson(json);
 

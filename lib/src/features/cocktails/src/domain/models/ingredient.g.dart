@@ -8,15 +8,15 @@ part of 'ingredient.dart';
 
 Ingredient _$IngredientFromJson(Map<String, dynamic> json) => Ingredient(
       name: json['name'] as String,
-      quantity: json['quantity'] as String,
-      unit: $enumDecode(_$UnitEnumMap, json['unit']),
+      quantity: json['quantity'],
+      unit: $enumDecodeNullable(_$UnitEnumMap, json['unit']),
     );
 
 Map<String, dynamic> _$IngredientToJson(Ingredient instance) =>
     <String, dynamic>{
       'name': instance.name,
       'quantity': instance.quantity,
-      'unit': _$UnitEnumMap[instance.unit]!,
+      'unit': _$UnitEnumMap[instance.unit],
     };
 
 const _$UnitEnumMap = {

@@ -19,6 +19,7 @@ class Cocktail extends Equatable {
   final int id;
   final String name;
   final String recipe;
+  @JsonKey(name: 'imageURI')
   final String imageUri;
   final String history;
   final List<Ingredient> ingredients;

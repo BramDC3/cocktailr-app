@@ -1,5 +1,5 @@
 class JulepApi {
-  static const _baseUrl = 'https://julep-api-hazltuqnpq-ew.a.run.app';
+  static const _baseUrl = 'julep-api-hazltuqnpq-ew.a.run.app';
 
   Uri cocktails() => _buildUri(endpoint: '/cocktails');
 
