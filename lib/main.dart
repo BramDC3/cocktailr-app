@@ -1,4 +1,5 @@
 import 'package:cocktailr/src/features/cocktails/cocktails.dart';
+import 'package:cocktailr/src/features/profile/profile.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,7 +25,7 @@ class CocktailrApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const CocktailsOverviewScreen(),
+      home: const ProfileScreen(),
     );
   }
 }

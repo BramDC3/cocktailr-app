@@ -12,8 +12,12 @@ class CocktailsOverviewScreen extends StatelessWidget {
     return Scaffold(
       body: const Column(
         children: [
-          _Header(),
-          _CocktailCarousel(),
+          SafeArea(
+            child: _Header(),
+          ),
+          Expanded(
+            child: _CocktailCarousel(),
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
