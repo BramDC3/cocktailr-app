@@ -9,26 +9,14 @@ class CocktailsOverviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: const Column(
+    return const Scaffold(
+      body: Column(
         children: [
           SafeArea(
             child: _Header(),
           ),
           Expanded(
             child: _CocktailCarousel(),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.abc),
-            label: 'Cocktails',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.abc),
-            label: 'Profile',
           ),
         ],
       ),
