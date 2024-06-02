@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../application/providers.dart';
 import '../../domain/models/cocktail.dart';
@@ -78,12 +79,20 @@ class _CocktailCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          Image.network(cocktail.imageUri),
-          Text(cocktail.name),
-        ],
+    return GestureDetector(
+      onTap: () {
+        GoRouter.of(context).go(
+          '/cocktails/${cocktail.id}',
+          extra: cocktail,
+        );
+      },
+      child: Card(
+        child: Column(
+          children: [
+            Image.network(cocktail.imageUri),
+            Text(cocktail.name),
+          ],
+        ),
       ),
     );
   }

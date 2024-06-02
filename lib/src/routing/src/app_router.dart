@@ -22,7 +22,22 @@ final _router = GoRouter(
               name: 'cocktails',
               path: AppRoutes.cocktails,
               builder: (context, state) => const CocktailsOverviewScreen(),
-              routes: const [],
+              routes: [
+                GoRoute(
+                  name: 'cocktail detail',
+                  path: ':id',
+                  builder: (context, state) {
+                    // TODO: error handling for invalid ids
+                    final id = int.parse(state.pathParameters['id']!);
+                    final cocktail = state.extra as Cocktail?;
+
+                    return CocktailDetailScreen(
+                      cocktailId: id,
+                      cocktail: cocktail,
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),
@@ -32,7 +47,6 @@ final _router = GoRouter(
               name: 'profile',
               path: AppRoutes.profile,
               builder: (context, state) => const ProfileScreen(),
-              routes: const [],
             ),
           ],
         ),
