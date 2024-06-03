@@ -24,6 +24,11 @@ final _router = GoRouter(
               builder: (context, state) => const CocktailsOverviewScreen(),
               routes: [
                 GoRoute(
+                  name: 'cocktail search',
+                  path: AppRoutes.search,
+                  builder: (context, state) => const SearchCocktailScreen(),
+                ),
+                GoRoute(
                   name: 'cocktail detail',
                   path: ':id',
                   builder: (context, state) {

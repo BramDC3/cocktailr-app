@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../application/providers.dart';
 import '../../domain/models/cocktail.dart';
+import 'controllers/filtered_cocktails_provider.dart';
 
-class CocktailsOverviewScreen extends StatelessWidget {
-  const CocktailsOverviewScreen({super.key});
+class SearchCocktailScreen extends StatelessWidget {
+  const SearchCocktailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class CocktailsOverviewScreen extends StatelessWidget {
             child: _Header(),
           ),
           Expanded(
-            child: _CocktailCarousel(),
+            child: _CocktailList(),
           ),
         ],
       ),
@@ -26,43 +26,60 @@ class CocktailsOverviewScreen extends StatelessWidget {
   }
 }
 
-class _Header extends StatelessWidget {
+class _Header extends ConsumerWidget {
   const _Header();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       children: [
-        const Expanded(
-          child: Text('Bartenders\nFriend'),
+        Expanded(
+          child: TextField(
+            onChanged: (value) {
+              ref.read(filteredCocktailsProvider.notifier).onNameFilterUpdated(value);
+            },
+            decoration: const InputDecoration(
+              hintText: 'Start typing...',
+              border: InputBorder.none,
+            ),
+          ),
         ),
         const SizedBox(width: 16.0),
         IconButton(
           onPressed: () {
-            GoRouter.of(context).go('${AppRoutes.cocktails}/${AppRoutes.search}');
+            final goRouter = GoRouter.of(context);
+            if (goRouter.canPop()) {
+              goRouter.pop();
+            } else {
+              goRouter.go(AppRoutes.cocktails);
+            }
           },
-          icon: const Icon(Icons.search),
+          icon: const Icon(Icons.close),
         ),
       ],
     );
   }
 }
 
-class _CocktailCarousel extends ConsumerWidget {
-  const _CocktailCarousel();
+class _CocktailList extends ConsumerWidget {
+  const _CocktailList();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cocktails = ref.watch(cocktailsProvider);
+    final filteredCocktails = ref.watch(filteredCocktailsProvider);
 
-    return cocktails.when(
+    return filteredCocktails.when(
       data: (cocktails) {
+        if (cocktails.isEmpty) {
+          return const Center(
+            child: Text('No cocktails'),
+          );
+        }
+
         return ListView.builder(
-          scrollDirection: Axis.horizontal,
           itemCount: cocktails.length,
           itemBuilder: (context, index) {
             final cocktail = cocktails[index];
-
             return _CocktailCard(cocktail: cocktail);
           },
         );
@@ -89,21 +106,8 @@ class _CocktailCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        GoRouter.of(context).go(
-          '/cocktails/${cocktail.id}',
-          extra: cocktail,
-        );
-      },
-      child: Card(
-        child: Column(
-          children: [
-            Image.network(cocktail.imageUri),
-            Text(cocktail.name),
-          ],
-        ),
-      ),
+    return ListTile(
+      title: Text(cocktail.name),
     );
   }
 }
