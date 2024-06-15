@@ -20,6 +20,7 @@ class CocktailDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: const AppBackButton(),
         title: Text(
           cocktail?.name ?? cocktailId.toString(),
           style: typography.title2.copyWith(color: colors.white),
