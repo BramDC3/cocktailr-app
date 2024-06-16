@@ -53,9 +53,9 @@ class _CocktailCarousel extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cocktails = ref.watch(cocktailsProvider);
+    final cocktailsFuture = ref.watch(cocktailsProvider);
 
-    return cocktails.when(
+    return cocktailsFuture.when(
       data: (cocktails) {
         return ListView.builder(
           scrollDirection: Axis.horizontal,

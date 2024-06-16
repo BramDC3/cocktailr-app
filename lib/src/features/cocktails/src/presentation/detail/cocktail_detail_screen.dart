@@ -1,12 +1,14 @@
 import 'package:cocktailr/src/ui/ui.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intersperse/intersperse.dart';
 
+import '../../application/providers.dart';
 import '../../domain/models/cocktail.dart';
 import '../../domain/models/ingredient.dart';
 
-class CocktailDetailScreen extends StatelessWidget {
+class CocktailDetailScreen extends ConsumerWidget {
   const CocktailDetailScreen({
     super.key,
     required this.cocktailId,
@@ -17,25 +19,79 @@ class CocktailDetailScreen extends StatelessWidget {
   final Cocktail? cocktail;
 
   @override
-  Widget build(BuildContext context) {
-    final colors = context.appColors;
-    final typography = context.appTypography;
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (cocktail != null) {
+      return _DataScaffold(cocktail: cocktail!);
+    }
 
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: const AppBackButton(),
-        title: Text(
-          cocktail?.name ?? cocktailId.toString(),
-          style: typography.title2.copyWith(color: colors.white),
+    final cocktailFuture = ref.watch(cocktailProvider(cocktailId));
+
+    return cocktailFuture.when(
+      data: (cocktail) => _DataScaffold(cocktail: cocktail),
+      loading: () => const Scaffold(
+        appBar: _AppBar(),
+        body: Center(
+          child: CircularProgressIndicator(),
         ),
       ),
+      error: (error, _) => Scaffold(
+        appBar: const _AppBar(),
+        body: Center(
+          child: Text(
+            error.toString(),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DataScaffold extends StatelessWidget {
+  const _DataScaffold({
+    required this.cocktail,
+  });
+
+  final Cocktail cocktail;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.appColors;
+
+    return Scaffold(
+      appBar: _AppBar(title: cocktail.name),
       backgroundColor: colors.royal200,
       extendBodyBehindAppBar: true,
       body: _Body(cocktail: cocktail),
     );
   }
+}
+
+class _AppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _AppBar({
+    this.title,
+  });
+
+  final String? title;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.appColors;
+    final typography = context.appTypography;
+
+    return AppBar(
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      leading: const AppBackButton(),
+      title: Text(
+        title ?? '',
+        style: typography.title2.copyWith(color: colors.white),
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class _Body extends StatelessWidget {
