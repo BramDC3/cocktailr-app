@@ -106,8 +106,16 @@ class _CocktailCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(cocktail.name),
+    return GestureDetector(
+      onTap: () {
+        GoRouter.of(context).go(
+          '/cocktails/search/${cocktail.id}',
+          extra: cocktail,
+        );
+      },
+      child: ListTile(
+        title: Text(cocktail.name),
+      ),
     );
   }
 }

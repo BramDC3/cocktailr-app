@@ -9,6 +9,21 @@ import 'widgets/scaffold_with_bottom_nav_bar.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
+final _cocktailDetailRoute = GoRoute(
+  path: ':id',
+  parentNavigatorKey: _rootNavigatorKey,
+  builder: (context, state) {
+    // TODO: error handling for invalid ids
+    final id = int.parse(state.pathParameters['id']!);
+    final cocktail = state.extra as Cocktail?;
+
+    return CocktailDetailScreen(
+      cocktailId: id,
+      cocktail: cocktail,
+    );
+  },
+);
+
 final _router = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: AppRoutes.cocktails,
@@ -19,29 +34,18 @@ final _router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              name: 'cocktails',
               path: AppRoutes.cocktails,
               builder: (context, state) => const CocktailsOverviewScreen(),
               routes: [
                 GoRoute(
-                  name: 'cocktail search',
                   path: AppRoutes.search,
+                  parentNavigatorKey: _rootNavigatorKey,
                   builder: (context, state) => const SearchCocktailScreen(),
+                  routes: [
+                    _cocktailDetailRoute,
+                  ],
                 ),
-                GoRoute(
-                  name: 'cocktail detail',
-                  path: ':id',
-                  builder: (context, state) {
-                    // TODO: error handling for invalid ids
-                    final id = int.parse(state.pathParameters['id']!);
-                    final cocktail = state.extra as Cocktail?;
-
-                    return CocktailDetailScreen(
-                      cocktailId: id,
-                      cocktail: cocktail,
-                    );
-                  },
-                ),
+                _cocktailDetailRoute,
               ],
             ),
           ],
@@ -49,7 +53,6 @@ final _router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              name: 'profile',
               path: AppRoutes.profile,
               builder: (context, state) => const ProfileScreen(),
             ),
