@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
   int _calculateSelectedIndex(BuildContext context) {
     final location = GoRouterState.of(context).uri.path;
 
-    if (location.startsWith(AppRoutes.profile)) {
+    if (location.startsWith(AppRoutes.getProfileUrl())) {
       return 1;
     }
 
@@ -43,10 +43,10 @@ class HomeScreen extends StatelessWidget {
 
   void _onItemTapped(int index, BuildContext context) {
     final location = switch (index) {
-      1 => AppRoutes.profile,
-      0 || _ => AppRoutes.cocktails,
+      1 => AppRoutes.getProfileUrl(),
+      0 || _ => AppRoutes.getCocktailsUrl(),
     };
 
-    GoRouter.of(context).go(location);
+    context.go(location);
   }
 }

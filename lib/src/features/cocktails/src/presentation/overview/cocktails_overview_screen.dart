@@ -39,7 +39,7 @@ class _Header extends StatelessWidget {
         const SizedBox(width: 16.0),
         IconButton(
           onPressed: () {
-            GoRouter.of(context).go('${AppRoutes.cocktails}/${AppRoutes.search}');
+            context.go(AppRoutes.getCocktailSearchUrl());
           },
           icon: const Icon(Icons.search),
         ),
@@ -91,8 +91,8 @@ class _CocktailCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        GoRouter.of(context).go(
-          '/cocktails/${cocktail.id}',
+        context.go(
+          AppRoutes.getCocktailDetailUrl(cocktail.id),
           extra: cocktail,
         );
       },

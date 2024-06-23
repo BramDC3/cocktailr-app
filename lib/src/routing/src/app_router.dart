@@ -26,7 +26,7 @@ final _cocktailDetailRoute = GoRoute(
 
 final _router = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: AppRoutes.cocktails,
+  initialLocation: '/${AppRouteNames.cocktails}',
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, child) => ScaffoldWithBottomNavBar(child: child),
@@ -34,11 +34,11 @@ final _router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: AppRoutes.cocktails,
+              path: '/${AppRouteNames.cocktails}',
               builder: (context, state) => const CocktailsOverviewScreen(),
               routes: [
                 GoRoute(
-                  path: AppRoutes.search,
+                  path: AppRouteNames.cocktailSearch,
                   parentNavigatorKey: _rootNavigatorKey,
                   builder: (context, state) => const SearchCocktailScreen(),
                   routes: [
@@ -53,7 +53,7 @@ final _router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: AppRoutes.profile,
+              path: '/${AppRouteNames.profile}',
               builder: (context, state) => const ProfileScreen(),
             ),
           ],

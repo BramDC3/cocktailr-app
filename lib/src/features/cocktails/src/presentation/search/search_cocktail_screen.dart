@@ -47,11 +47,10 @@ class _Header extends ConsumerWidget {
         const SizedBox(width: 16.0),
         IconButton(
           onPressed: () {
-            final goRouter = GoRouter.of(context);
-            if (goRouter.canPop()) {
-              goRouter.pop();
+            if (context.canPop()) {
+              context.pop();
             } else {
-              goRouter.go(AppRoutes.cocktails);
+              context.go(AppRoutes.getCocktailsUrl());
             }
           },
           icon: const Icon(Icons.close),
@@ -108,8 +107,8 @@ class _CocktailCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        GoRouter.of(context).go(
-          '/cocktails/search/${cocktail.id}',
+        context.go(
+          AppRoutes.getCocktailSearchDetailUrl(cocktail.id),
           extra: cocktail,
         );
       },
