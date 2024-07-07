@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cocktailr/src/routing/routing.dart';
+import 'package:cocktailr/src/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,15 +13,19 @@ class CocktailsOverviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Column(
+    return Scaffold(
+      backgroundColor: context.royal200,
+      body: const Column(
         children: [
           SafeArea(
+            bottom: false,
             child: _Header(),
           ),
+          SizedBox(height: 24.0),
           Expanded(
             child: _CocktailCarousel(),
           ),
+          SizedBox(height: 48.0),
         ],
       ),
     );
@@ -31,39 +37,106 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Expanded(
-          child: Text('Bartenders\nFriend'),
-        ),
-        const SizedBox(width: 16.0),
-        IconButton(
-          onPressed: () {
-            context.go(AppRoutes.getCocktailSearchUrl());
-          },
-          icon: const Icon(Icons.search),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 24.0,
+        right: 32.0,
+        top: 16.0,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Text(
+              'Bartenders\nFriend',
+              style: context.title1.copyWith(
+                color: context.white,
+              ),
+            ),
+          ),
+          const SizedBox(width: 16.0),
+          AppIconButton(
+            assetName: 'assets/icons/ic_search.svg',
+            tooltip: MaterialLocalizations.of(context).searchFieldLabel,
+            showInnerBorder: true,
+            onPressed: () {
+              context.go(AppRoutes.getCocktailSearchUrl());
+            },
+          ),
+        ],
+      ),
     );
   }
 }
 
-class _CocktailCarousel extends ConsumerWidget {
+class _CocktailCarousel extends ConsumerStatefulWidget {
   const _CocktailCarousel();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_CocktailCarousel> createState() => _CocktailCarouselState();
+}
+
+class _CocktailCarouselState extends ConsumerState<_CocktailCarousel> {
+  late final PageController _pageController;
+
+  int currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _pageController = PageController(
+      initialPage: currentPage,
+      viewportFraction: 0.8,
+    )..addListener(_updateCurrentPage);
+  }
+
+  void _updateCurrentPage() {
+    setState(() {
+      currentPage = _pageController.page?.round() ?? 0;
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.removeListener(_updateCurrentPage);
+    _pageController.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final cocktailsFuture = ref.watch(cocktailsProvider);
 
     return cocktailsFuture.when(
       data: (cocktails) {
-        return ListView.builder(
-          scrollDirection: Axis.horizontal,
+        return PageView.builder(
+          controller: _pageController,
           itemCount: cocktails.length,
           itemBuilder: (context, index) {
             final cocktail = cocktails[index];
 
-            return _CocktailCard(cocktail: cocktail);
+            return GestureDetector(
+              onTap: () {
+                context.go(
+                  AppRoutes.getCocktailDetailUrl(cocktail.id),
+                  extra: cocktail,
+                );
+              },
+              child: Column(
+                children: [
+                  Expanded(
+                    child: _CocktailCard(
+                      cocktail: cocktail,
+                      selected: index == currentPage,
+                    ),
+                  ),
+                  const SizedBox(height: 24.0),
+                  _CocktailName(name: cocktail.name),
+                ],
+              ),
+            );
           },
         );
       },
@@ -80,30 +153,116 @@ class _CocktailCarousel extends ConsumerWidget {
   }
 }
 
-class _CocktailCard extends StatelessWidget {
+class _CocktailCard extends StatefulWidget {
   const _CocktailCard({
     required this.cocktail,
+    required this.selected,
   });
 
   final Cocktail cocktail;
+  final bool selected;
+
+  @override
+  State<_CocktailCard> createState() => _CocktailCardState();
+}
+
+class _CocktailCardState extends State<_CocktailCard> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+
+    _animation = Tween<double>(begin: 0.9, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    if (widget.selected) {
+      _controller.animateTo(1.0, duration: Duration.zero);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant _CocktailCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.selected) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        context.go(
-          AppRoutes.getCocktailDetailUrl(cocktail.id),
-          extra: cocktail,
-        );
-      },
-      child: Card(
-        child: Column(
-          children: [
-            Image.network(cocktail.imageUri),
-            Text(cocktail.name),
-          ],
+    return ScaleTransition(
+      scale: _animation,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: context.white.withOpacity(0.3),
+            width: 1.5,
+          ),
+        ),
+        padding: const EdgeInsets.all(6.0),
+        child: CachedNetworkImage(
+          imageUrl: widget.cocktail.imageUri,
+          fit: BoxFit.fitHeight,
+          placeholder: (context, url) => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
         ),
       ),
+    );
+  }
+}
+
+class _CocktailName extends StatelessWidget {
+  const _CocktailName({
+    required this.name,
+  });
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          name,
+          style: context.title2.copyWith(color: context.white),
+        ),
+        Stack(
+          children: [
+            Text(
+              name,
+              style: context.title2.copyWith(color: Colors.transparent),
+            ),
+            const Positioned.fill(
+              child: Center(
+                child: GoldenTrim(),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

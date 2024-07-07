@@ -10,6 +10,7 @@ part of 'app_colors.dart';
 
 mixin _$AppColorsTailorMixin on ThemeExtension<AppColors> {
   Color get white;
+  Color get black;
   Color get royal100;
   Color get royal200;
   Color get royal300;
@@ -19,6 +20,7 @@ mixin _$AppColorsTailorMixin on ThemeExtension<AppColors> {
   @override
   AppColors copyWith({
     Color? white,
+    Color? black,
     Color? royal100,
     Color? royal200,
     Color? royal300,
@@ -27,6 +29,7 @@ mixin _$AppColorsTailorMixin on ThemeExtension<AppColors> {
   }) {
     return AppColors(
       white: white ?? this.white,
+      black: black ?? this.black,
       royal100: royal100 ?? this.royal100,
       royal200: royal200 ?? this.royal200,
       royal300: royal300 ?? this.royal300,
@@ -40,6 +43,7 @@ mixin _$AppColorsTailorMixin on ThemeExtension<AppColors> {
     if (other is! AppColors) return this as AppColors;
     return AppColors(
       white: Color.lerp(white, other.white, t)!,
+      black: Color.lerp(black, other.black, t)!,
       royal100: Color.lerp(royal100, other.royal100, t)!,
       royal200: Color.lerp(royal200, other.royal200, t)!,
       royal300: Color.lerp(royal300, other.royal300, t)!,
@@ -55,6 +59,7 @@ mixin _$AppColorsTailorMixin on ThemeExtension<AppColors> {
         (other.runtimeType == runtimeType &&
             other is AppColors &&
             const DeepCollectionEquality().equals(white, other.white) &&
+            const DeepCollectionEquality().equals(black, other.black) &&
             const DeepCollectionEquality().equals(royal100, other.royal100) &&
             const DeepCollectionEquality().equals(royal200, other.royal200) &&
             const DeepCollectionEquality().equals(royal300, other.royal300) &&
@@ -68,6 +73,7 @@ mixin _$AppColorsTailorMixin on ThemeExtension<AppColors> {
     return Object.hash(
       runtimeType.hashCode,
       const DeepCollectionEquality().hash(white),
+      const DeepCollectionEquality().hash(black),
       const DeepCollectionEquality().hash(royal100),
       const DeepCollectionEquality().hash(royal200),
       const DeepCollectionEquality().hash(royal300),
@@ -80,6 +86,7 @@ mixin _$AppColorsTailorMixin on ThemeExtension<AppColors> {
 extension AppColorsBuildContextProps on BuildContext {
   AppColors get appColors => Theme.of(this).extension<AppColors>()!;
   Color get white => appColors.white;
+  Color get black => appColors.black;
   Color get royal100 => appColors.royal100;
   Color get royal200 => appColors.royal200;
   Color get royal300 => appColors.royal300;

@@ -155,7 +155,7 @@ class _SectionTitle extends StatelessWidget {
     return Row(
       children: [
         const SizedBox(width: 16.0),
-        const Expanded(child: _GoldenTrim()),
+        const Expanded(child: GoldenTrim()),
         const SizedBox(width: 16.0),
         Stack(
           alignment: Alignment.center,
@@ -171,36 +171,8 @@ class _SectionTitle extends StatelessWidget {
           ],
         ),
         const SizedBox(width: 16.0),
-        const Expanded(child: _GoldenTrim()),
+        const Expanded(child: GoldenTrim()),
         const SizedBox(width: 16.0),
-      ],
-    );
-  }
-}
-
-class _GoldenTrim extends StatelessWidget {
-  const _GoldenTrim();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SizedBox(
-          width: double.infinity,
-          height: 1.0,
-          child: DecoratedBox(
-            decoration: BoxDecoration(color: context.appColors.gold),
-          ),
-        ),
-        const SizedBox(height: 6.0),
-        SizedBox(
-          width: double.infinity,
-          height: 3.0,
-          child: DecoratedBox(
-            decoration: BoxDecoration(gradient: context.appGradients.gold),
-          ),
-        ),
       ],
     );
   }

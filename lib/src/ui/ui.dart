@@ -7,3 +7,4 @@ export 'src/widgets/svg_asset.dart';
 export 'src/widgets/buttons/app_back_button.dart';
 export 'src/widgets/buttons/app_icon_button.dart';
 export 'src/widgets/list_item_divider.dart';
+export 'src/widgets/golden_trim.dart';

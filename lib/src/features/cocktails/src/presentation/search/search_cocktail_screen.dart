@@ -46,6 +46,7 @@ class _Header extends ConsumerWidget {
         top: 16.0,
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: TextField(

@@ -12,6 +12,7 @@ final darkTheme = ThemeData(
   extensions: const [
     AppColors(
       white: ColorTokens.white,
+      black: ColorTokens.black,
       royal100: ColorTokens.royal100,
       royal200: ColorTokens.royal200,
       royal300: ColorTokens.royal300,

@@ -4,6 +4,7 @@ class ColorTokens {
   const ColorTokens._();
 
   static const white = Color(0xFFFFFFFF);
+  static const black = Color(0xFF000000);
 
   static const royal100 = Color(0xFF412C63);
   static const royal200 = Color(0xFF230B4A);

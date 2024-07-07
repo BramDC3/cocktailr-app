@@ -10,11 +10,13 @@ class AppIconButton extends StatelessWidget {
     required this.assetName,
     this.onPressed,
     this.tooltip,
+    this.showInnerBorder = false,
   });
 
   final String assetName;
   final VoidCallback? onPressed;
   final String? tooltip;
+  final bool showInnerBorder;
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +36,16 @@ class AppIconButton extends StatelessWidget {
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.all(8.0),
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: context.royal300,
+                  border: showInnerBorder
+                      ? Border.all(
+                          color: context.black,
+                          width: 1.5,
+                        )
+                      : null,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),

@@ -9,6 +9,7 @@ part 'app_colors.tailor.dart';
 class AppColors extends ThemeExtension<AppColors> with _$AppColorsTailorMixin {
   const AppColors({
     required this.white,
+    required this.black,
     required this.royal100,
     required this.royal200,
     required this.royal300,
@@ -17,6 +18,7 @@ class AppColors extends ThemeExtension<AppColors> with _$AppColorsTailorMixin {
   });
 
   final Color white;
+  final Color black;
   final Color royal100;
   final Color royal200;
   final Color royal300;
