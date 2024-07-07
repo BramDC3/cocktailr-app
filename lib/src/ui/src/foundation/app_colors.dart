@@ -13,6 +13,7 @@ class AppColors extends ThemeExtension<AppColors> with _$AppColorsTailorMixin {
     required this.royal200,
     required this.royal300,
     required this.gold,
+    required this.bottomNavBarInactive,
   });
 
   final Color white;
@@ -20,4 +21,5 @@ class AppColors extends ThemeExtension<AppColors> with _$AppColorsTailorMixin {
   final Color royal200;
   final Color royal300;
   final Color gold;
+  final Color bottomNavBarInactive;
 }

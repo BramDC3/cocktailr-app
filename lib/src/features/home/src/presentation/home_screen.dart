@@ -1,4 +1,5 @@
 import 'package:cocktailr/src/routing/routing.dart';
+import 'package:cocktailr/src/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,19 +13,30 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return Scaffold(
       body: child,
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.tour),
+            icon: SvgAsset(assetName: 'assets/icons/ic_cocktail_inactive.svg'),
+            activeIcon: SvgAsset(assetName: 'assets/icons/ic_cocktail_active.svg'),
             label: 'Cocktails',
+            tooltip: 'Show cocktails'
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: SvgAsset(assetName: 'assets/icons/ic_bartender_inactive.svg'),
+            activeIcon: SvgAsset(assetName: 'assets/icons/ic_bartender_active.svg'),
+            label: 'Bartender',
+            tooltip: 'Show bartender'
           ),
         ],
+        backgroundColor: colors.royal100,
+        selectedLabelStyle: context.bottomNavBar,
+        unselectedLabelStyle: context.bottomNavBar,
+        selectedItemColor: colors.gold,
+        unselectedItemColor: colors.bottomNavBarInactive,
         currentIndex: _calculateSelectedIndex(context),
         onTap: (index) => _onItemTapped(index, context),
       ),

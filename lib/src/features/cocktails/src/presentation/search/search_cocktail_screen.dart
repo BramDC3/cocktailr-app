@@ -52,11 +52,10 @@ class _Header extends ConsumerWidget {
               onChanged: (value) {
                 ref.read(filteredCocktailsProvider.notifier).onNameFilterUpdated(value);
               },
+              style: context.title3.copyWith(color: context.white),
               decoration: InputDecoration(
                 hintText: 'Start typing...',
-                hintStyle: context.title3.copyWith(
-                  color: context.white,
-                ),
+                hintStyle: context.title3.copyWith(color: context.white),
                 border: InputBorder.none,
               ),
             ),
@@ -64,6 +63,7 @@ class _Header extends ConsumerWidget {
           const SizedBox(width: 16.0),
           AppIconButton(
             assetName: 'assets/icons/ic_close.svg',
+            tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
             onPressed: () {
               if (context.canPop()) {
                 context.pop();

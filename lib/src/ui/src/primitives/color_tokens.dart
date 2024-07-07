@@ -10,4 +10,6 @@ class ColorTokens {
   static const royal300 = Color(0xFF15073D);
 
   static const gold = Color(0xFFF3CE70);
+
+  static const bottomNavBarInactive = Color(0xFFB2A9C1);
 }

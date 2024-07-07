@@ -15,6 +15,7 @@ mixin _$AppTypographyTailorMixin on ThemeExtension<AppTypography> {
   TextStyle get title4;
   TextStyle get ingredientItem;
   TextStyle get paragraph;
+  TextStyle get bottomNavBar;
 
   @override
   AppTypography copyWith({
@@ -24,6 +25,7 @@ mixin _$AppTypographyTailorMixin on ThemeExtension<AppTypography> {
     TextStyle? title4,
     TextStyle? ingredientItem,
     TextStyle? paragraph,
+    TextStyle? bottomNavBar,
   }) {
     return AppTypography(
       title1: title1 ?? this.title1,
@@ -32,6 +34,7 @@ mixin _$AppTypographyTailorMixin on ThemeExtension<AppTypography> {
       title4: title4 ?? this.title4,
       ingredientItem: ingredientItem ?? this.ingredientItem,
       paragraph: paragraph ?? this.paragraph,
+      bottomNavBar: bottomNavBar ?? this.bottomNavBar,
     );
   }
 
@@ -45,6 +48,7 @@ mixin _$AppTypographyTailorMixin on ThemeExtension<AppTypography> {
       title4: TextStyle.lerp(title4, other.title4, t)!,
       ingredientItem: TextStyle.lerp(ingredientItem, other.ingredientItem, t)!,
       paragraph: TextStyle.lerp(paragraph, other.paragraph, t)!,
+      bottomNavBar: TextStyle.lerp(bottomNavBar, other.bottomNavBar, t)!,
     );
   }
 
@@ -59,7 +63,9 @@ mixin _$AppTypographyTailorMixin on ThemeExtension<AppTypography> {
             const DeepCollectionEquality().equals(title4, other.title4) &&
             const DeepCollectionEquality()
                 .equals(ingredientItem, other.ingredientItem) &&
-            const DeepCollectionEquality().equals(paragraph, other.paragraph));
+            const DeepCollectionEquality().equals(paragraph, other.paragraph) &&
+            const DeepCollectionEquality()
+                .equals(bottomNavBar, other.bottomNavBar));
   }
 
   @override
@@ -72,6 +78,7 @@ mixin _$AppTypographyTailorMixin on ThemeExtension<AppTypography> {
       const DeepCollectionEquality().hash(title4),
       const DeepCollectionEquality().hash(ingredientItem),
       const DeepCollectionEquality().hash(paragraph),
+      const DeepCollectionEquality().hash(bottomNavBar),
     );
   }
 }
@@ -84,4 +91,5 @@ extension AppTypographyBuildContextProps on BuildContext {
   TextStyle get title4 => appTypography.title4;
   TextStyle get ingredientItem => appTypography.ingredientItem;
   TextStyle get paragraph => appTypography.paragraph;
+  TextStyle get bottomNavBar => appTypography.bottomNavBar;
 }

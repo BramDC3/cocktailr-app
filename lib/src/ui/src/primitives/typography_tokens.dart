@@ -48,4 +48,11 @@ class TypographyTokens {
     fontSize: 16.0,
     height: 1.5,
   );
+
+  static const bottomNavBar = TextStyle(
+    fontFamily: _sfPro,
+    fontWeight: FontWeight.w500,
+    fontSize: 12.0,
+    height: 1.1,
+  );
 }

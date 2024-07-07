@@ -14,6 +14,7 @@ class AppTypography extends ThemeExtension<AppTypography> with _$AppTypographyTa
     required this.title4,
     required this.ingredientItem,
     required this.paragraph,
+    required this.bottomNavBar,
   });
 
   final TextStyle title1;
@@ -22,4 +23,5 @@ class AppTypography extends ThemeExtension<AppTypography> with _$AppTypographyTa
   final TextStyle title4;
   final TextStyle ingredientItem;
   final TextStyle paragraph;
+  final TextStyle bottomNavBar;
 }

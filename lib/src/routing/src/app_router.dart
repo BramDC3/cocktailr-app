@@ -1,11 +1,11 @@
 import 'package:cocktailr/src/features/cocktails/cocktails.dart';
+import 'package:cocktailr/src/features/home/home.dart';
 import 'package:cocktailr/src/features/profile/profile.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'app_routes.dart';
-import 'widgets/scaffold_with_bottom_nav_bar.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
@@ -29,7 +29,7 @@ final _router = GoRouter(
   initialLocation: '/${AppRouteNames.cocktails}',
   routes: [
     StatefulShellRoute.indexedStack(
-      builder: (context, state, child) => ScaffoldWithBottomNavBar(child: child),
+      builder: (context, state, child) => HomeScreen(child: child),
       branches: [
         StatefulShellBranch(
           routes: [

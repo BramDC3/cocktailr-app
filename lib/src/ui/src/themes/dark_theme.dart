@@ -16,6 +16,7 @@ final darkTheme = ThemeData(
       royal200: ColorTokens.royal200,
       royal300: ColorTokens.royal300,
       gold: ColorTokens.gold,
+      bottomNavBarInactive: ColorTokens.bottomNavBarInactive,
     ),
     AppGradients(
       gold: GradientTokens.gold,
@@ -27,6 +28,7 @@ final darkTheme = ThemeData(
       title4: TypographyTokens.title4,
       ingredientItem: TypographyTokens.ingredientItem,
       paragraph: TypographyTokens.paragraph,
+      bottomNavBar: TypographyTokens.bottomNavBar,
     ),
   ],
 );

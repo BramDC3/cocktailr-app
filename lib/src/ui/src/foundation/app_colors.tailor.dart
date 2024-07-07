@@ -14,6 +14,7 @@ mixin _$AppColorsTailorMixin on ThemeExtension<AppColors> {
   Color get royal200;
   Color get royal300;
   Color get gold;
+  Color get bottomNavBarInactive;
 
   @override
   AppColors copyWith({
@@ -22,6 +23,7 @@ mixin _$AppColorsTailorMixin on ThemeExtension<AppColors> {
     Color? royal200,
     Color? royal300,
     Color? gold,
+    Color? bottomNavBarInactive,
   }) {
     return AppColors(
       white: white ?? this.white,
@@ -29,6 +31,7 @@ mixin _$AppColorsTailorMixin on ThemeExtension<AppColors> {
       royal200: royal200 ?? this.royal200,
       royal300: royal300 ?? this.royal300,
       gold: gold ?? this.gold,
+      bottomNavBarInactive: bottomNavBarInactive ?? this.bottomNavBarInactive,
     );
   }
 
@@ -41,6 +44,8 @@ mixin _$AppColorsTailorMixin on ThemeExtension<AppColors> {
       royal200: Color.lerp(royal200, other.royal200, t)!,
       royal300: Color.lerp(royal300, other.royal300, t)!,
       gold: Color.lerp(gold, other.gold, t)!,
+      bottomNavBarInactive:
+          Color.lerp(bottomNavBarInactive, other.bottomNavBarInactive, t)!,
     );
   }
 
@@ -53,7 +58,9 @@ mixin _$AppColorsTailorMixin on ThemeExtension<AppColors> {
             const DeepCollectionEquality().equals(royal100, other.royal100) &&
             const DeepCollectionEquality().equals(royal200, other.royal200) &&
             const DeepCollectionEquality().equals(royal300, other.royal300) &&
-            const DeepCollectionEquality().equals(gold, other.gold));
+            const DeepCollectionEquality().equals(gold, other.gold) &&
+            const DeepCollectionEquality()
+                .equals(bottomNavBarInactive, other.bottomNavBarInactive));
   }
 
   @override
@@ -65,6 +72,7 @@ mixin _$AppColorsTailorMixin on ThemeExtension<AppColors> {
       const DeepCollectionEquality().hash(royal200),
       const DeepCollectionEquality().hash(royal300),
       const DeepCollectionEquality().hash(gold),
+      const DeepCollectionEquality().hash(bottomNavBarInactive),
     );
   }
 }
@@ -76,4 +84,5 @@ extension AppColorsBuildContextProps on BuildContext {
   Color get royal200 => appColors.royal200;
   Color get royal300 => appColors.royal300;
   Color get gold => appColors.gold;
+  Color get bottomNavBarInactive => appColors.bottomNavBarInactive;
 }
