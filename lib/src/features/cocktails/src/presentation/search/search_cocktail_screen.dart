@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cocktailr/src/routing/routing.dart';
+import 'package:cocktailr/src/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,14 +13,20 @@ class SearchCocktailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Column(
+    return Scaffold(
+      backgroundColor: context.royal200,
+      body: const Column(
         children: [
           SafeArea(
+            bottom: false,
             child: _Header(),
           ),
+          SizedBox(height: 32.0),
           Expanded(
-            child: _CocktailList(),
+            child: SafeArea(
+              top: false,
+              child: _CocktailList(),
+            ),
           ),
         ],
       ),
@@ -31,31 +39,41 @@ class _Header extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            onChanged: (value) {
-              ref.read(filteredCocktailsProvider.notifier).onNameFilterUpdated(value);
-            },
-            decoration: const InputDecoration(
-              hintText: 'Start typing...',
-              border: InputBorder.none,
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 24.0,
+        right: 32.0,
+        top: 16.0,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              onChanged: (value) {
+                ref.read(filteredCocktailsProvider.notifier).onNameFilterUpdated(value);
+              },
+              decoration: InputDecoration(
+                hintText: 'Start typing...',
+                hintStyle: context.title3.copyWith(
+                  color: context.white,
+                ),
+                border: InputBorder.none,
+              ),
             ),
           ),
-        ),
-        const SizedBox(width: 16.0),
-        IconButton(
-          onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            } else {
-              context.go(AppRoutes.getCocktailsUrl());
-            }
-          },
-          icon: const Icon(Icons.close),
-        ),
-      ],
+          const SizedBox(width: 16.0),
+          AppIconButton(
+            assetName: 'assets/icons/ic_close.svg',
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                context.go(AppRoutes.getCocktailsUrl());
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -75,12 +93,17 @@ class _CocktailList extends ConsumerWidget {
           );
         }
 
-        return ListView.builder(
+        return ListView.separated(
           itemCount: cocktails.length,
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           itemBuilder: (context, index) {
             final cocktail = cocktails[index];
             return _CocktailCard(cocktail: cocktail);
           },
+          separatorBuilder: (context, index) => const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: ListItemDivider(),
+          ),
         );
       },
       loading: () => const Center(
@@ -112,8 +135,26 @@ class _CocktailCard extends StatelessWidget {
           extra: cocktail,
         );
       },
-      child: ListTile(
-        title: Text(cocktail.name),
+      child: DecoratedBox(
+        decoration: const BoxDecoration(
+          color: Colors.transparent,
+        ),
+        child: Row(
+          children: [
+            CachedNetworkImage(
+              imageUrl: cocktail.imageUri,
+              width: 72.0,
+              height: 72.0,
+            ),
+            const SizedBox(width: 40.0),
+            Expanded(
+              child: Text(
+                cocktail.name,
+                style: context.title3.copyWith(color: context.white),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

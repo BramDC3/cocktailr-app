@@ -157,9 +157,18 @@ class _SectionTitle extends StatelessWidget {
         const SizedBox(width: 16.0),
         const Expanded(child: _GoldenTrim()),
         const SizedBox(width: 16.0),
-        Text(
-          title.toUpperCase(),
-          style: context.appTypography.title4.copyWith(color: context.appColors.white),
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Text(
+              'Ingredients'.toUpperCase(),
+              style: context.appTypography.title4.copyWith(color: Colors.transparent),
+            ),
+            Text(
+              title.toUpperCase(),
+              style: context.appTypography.title4.copyWith(color: context.appColors.white),
+            ),
+          ],
         ),
         const SizedBox(width: 16.0),
         const Expanded(child: _GoldenTrim()),
@@ -208,7 +217,7 @@ class _IngredientsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final listItems = ingredients
         .map<Widget>((ingredient) => _IngredientListItem(ingredient: ingredient))
-        .intersperseOuter(const _IngredientListBorder())
+        .intersperseOuter(const ListItemDivider())
         .toList();
 
     if (listItems.isEmpty) {
@@ -254,23 +263,6 @@ class _IngredientListItem extends StatelessWidget {
       child: Text(
         text,
         style: context.appTypography.ingredientItem.copyWith(color: context.appColors.white),
-      ),
-    );
-  }
-}
-
-class _IngredientListBorder extends StatelessWidget {
-  const _IngredientListBorder();
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: 1.5,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: context.appColors.royal100,
-        ),
       ),
     );
   }
