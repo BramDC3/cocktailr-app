@@ -39,6 +39,7 @@ flutter:
     - path: assets/icons/
       transformers:
         - package: vector_graphics_compiler
+    - path: assets/images/
 
   fonts:
     - family: BodoniModa

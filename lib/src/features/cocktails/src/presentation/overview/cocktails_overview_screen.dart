@@ -15,18 +15,35 @@ class CocktailsOverviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.royal200,
-      body: const Column(
-        children: [
-          SafeArea(
-            bottom: false,
-            child: _Header(),
-          ),
-          SizedBox(height: 24.0),
-          Expanded(
-            child: _CocktailCarousel(),
-          ),
-          SizedBox(height: 48.0),
-        ],
+      body: SizedBox.expand(
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Positioned(
+              left: 0,
+              top: 0,
+              right: 0,
+              child: Image.asset(
+                'assets/images/img_bar_background.png',
+                alignment: Alignment.topCenter,
+                fit: BoxFit.fitWidth,
+              ),
+            ),
+            const Column(
+              children: [
+                SafeArea(
+                  bottom: false,
+                  child: _Header(),
+                ),
+                SizedBox(height: 24.0),
+                Expanded(
+                  child: _CocktailCarousel(),
+                ),
+                SizedBox(height: 48.0),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -170,6 +187,8 @@ class _CocktailCardState extends State<_CocktailCard> with SingleTickerProviderS
   late final AnimationController _controller;
   late final Animation<double> _animation;
 
+  bool _showBorder = false;
+
   @override
   void initState() {
     super.initState();
@@ -187,6 +206,7 @@ class _CocktailCardState extends State<_CocktailCard> with SingleTickerProviderS
     );
 
     if (widget.selected) {
+      _showBorder = true;
       _controller.animateTo(1.0, duration: Duration.zero);
     }
   }
@@ -200,6 +220,10 @@ class _CocktailCardState extends State<_CocktailCard> with SingleTickerProviderS
     } else {
       _controller.reverse();
     }
+
+    setState(() {
+      _showBorder = widget.selected;
+    });
   }
 
   @override
@@ -215,10 +239,12 @@ class _CocktailCardState extends State<_CocktailCard> with SingleTickerProviderS
       scale: _animation,
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(
-            color: context.white.withOpacity(0.3),
-            width: 1.5,
-          ),
+          border: _showBorder
+              ? Border.all(
+                  color: context.white.withOpacity(0.3),
+                  width: 1.5,
+                )
+              : null,
         ),
         padding: const EdgeInsets.all(6.0),
         child: CachedNetworkImage(
