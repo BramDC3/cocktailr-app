@@ -13,13 +13,22 @@ class ApiHelper {
   }) async {
     try {
       final response = await client.get(uri);
-      switch (response.statusCode) {
-        case 200:
-          final data = json.decode(response.body);
-          return builder(data);
-        default:
-          throw UnknownApiException();
+      final statusCode = response.statusCode;
+      final statusCodeString = statusCode.toString();
+
+      if (statusCodeString.startsWith('2')) {
+        final data = json.decode(response.body);
+        return builder(data);
       }
+
+      throw switch (response.statusCode) {
+        400 => BadRequestException(),
+        401 || 403 => UnauthorizedException(),
+        404 => NotFoundException(),
+        500 => InternalServerErrorException(),
+        502 => BadGatewayException(),
+        _ => UnknownApiException(),
+      };
     } on SocketException catch (_) {
       throw NoInternetConnectionException();
     }

@@ -8,3 +8,5 @@ export 'src/widgets/buttons/app_back_button.dart';
 export 'src/widgets/buttons/app_icon_button.dart';
 export 'src/widgets/list_item_divider.dart';
 export 'src/widgets/golden_trim.dart';
+export 'src/widgets/states/general_error_state.dart';
+export 'src/widgets/states/general_loading_state.dart';

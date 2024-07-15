@@ -27,20 +27,16 @@ class CocktailDetailScreen extends ConsumerWidget {
     final cocktailFuture = ref.watch(cocktailProvider(cocktailId));
 
     return cocktailFuture.when(
+      skipLoadingOnReload: false,
       data: (cocktail) => _DataScaffold(cocktail: cocktail),
       loading: () => const Scaffold(
         appBar: _AppBar(),
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
+        body: GeneralLoadingState(),
       ),
       error: (error, _) => Scaffold(
         appBar: const _AppBar(),
-        body: Center(
-          child: Text(
-            error.toString(),
-            textAlign: TextAlign.center,
-          ),
+        body: GeneralErrorState(
+          onPressed: () => ref.invalidate(cocktailProvider(cocktailId)),
         ),
       ),
     );

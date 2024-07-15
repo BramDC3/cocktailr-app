@@ -87,6 +87,7 @@ class _CocktailList extends ConsumerWidget {
     final filteredCocktails = ref.watch(filteredCocktailsProvider);
 
     return filteredCocktails.when(
+      skipLoadingOnRefresh: false,
       data: (cocktails) {
         if (cocktails.isEmpty) {
           return const Center(
@@ -107,14 +108,9 @@ class _CocktailList extends ConsumerWidget {
           ),
         );
       },
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
-      error: (error, _) => Center(
-        child: Text(
-          error.toString(),
-          textAlign: TextAlign.center,
-        ),
+      loading: () => const GeneralLoadingState(),
+      error: (error, _) => GeneralErrorState(
+        onPressed: ref.read(filteredCocktailsProvider.notifier).onTryAgainPressed,
       ),
     );
   }

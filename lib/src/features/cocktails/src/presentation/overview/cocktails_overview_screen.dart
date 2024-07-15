@@ -127,6 +127,7 @@ class _CocktailCarouselState extends ConsumerState<_CocktailCarousel> {
     final cocktailsFuture = ref.watch(cocktailsProvider);
 
     return cocktailsFuture.when(
+      skipLoadingOnRefresh: false,
       data: (cocktails) {
         return PageView.builder(
           controller: _pageController,
@@ -157,14 +158,9 @@ class _CocktailCarouselState extends ConsumerState<_CocktailCarousel> {
           },
         );
       },
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
-      error: (error, _) => Center(
-        child: Text(
-          error.toString(),
-          textAlign: TextAlign.center,
-        ),
+      loading: () => const GeneralLoadingState(),
+      error: (error, _) => GeneralErrorState(
+        onPressed: () => ref.invalidate(cocktailsProvider),
       ),
     );
   }
@@ -250,9 +246,7 @@ class _CocktailCardState extends State<_CocktailCard> with SingleTickerProviderS
         child: CachedNetworkImage(
           imageUrl: widget.cocktail.imageUri,
           fit: BoxFit.fitHeight,
-          placeholder: (context, url) => const Center(
-            child: CircularProgressIndicator(),
-          ),
+          placeholder: (context, url) => const GeneralLoadingState(),
           errorWidget: (context, url, error) => const Icon(Icons.error),
         ),
       ),
