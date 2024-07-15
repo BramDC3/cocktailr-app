@@ -31,10 +31,12 @@ class CocktailrApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final goRouter = ref.watch(goRouterProvider);
 
-    return MaterialApp.router(
-      title: 'Cocktailr',
-      routerConfig: goRouter,
-      theme: darkTheme,
+    return KeyboardDismisser(
+      child: MaterialApp.router(
+        title: 'Cocktailr',
+        routerConfig: goRouter,
+        theme: darkTheme,
+      ),
     );
   }
 }
