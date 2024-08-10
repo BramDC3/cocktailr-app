@@ -3,8 +3,6 @@ import 'package:cocktailr/src/julep_api/julep_api.dart';
 import 'package:cocktailr/src/utils/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:http_interceptor/http_interceptor.dart';
-import 'package:talker_http_logger/talker_http_logger.dart';
 
 import '../domain/models/cocktail.dart';
 import '../domain/models/unit.dart';
@@ -27,7 +25,7 @@ class CocktailRepository {
   Future<List<Cocktail>> getCocktails() async {
     _logger.info(_tag, 'getCocktails()');
 
-    return _apiHelper.getData(
+    return _apiHelper.get(
       client: _client,
       uri: _api.cocktails(unit: Unit.ml.name),
       builder: (cocktailsJson) {
@@ -43,7 +41,7 @@ class CocktailRepository {
   Future<Cocktail> getCocktail(int id) async {
     _logger.info(_tag, 'getCocktail(id: $id)');
 
-    return _apiHelper.getData(
+    return _apiHelper.get(
       client: _client,
       uri: _api.cocktail(
         id: id,
@@ -63,16 +61,8 @@ class CocktailRepository {
 final cocktailRepositoryProvider = Provider<CocktailRepository>((ref) {
   return CocktailRepository(
     ref.watch(julepApiProvider),
-    ref.watch(_httpClientProvider),
+    ref.watch(httpClientProvider),
     ref.watch(apiHelperProvider),
     ref.watch(loggerProvider),
   );
-});
-
-final _httpClientProvider = Provider<http.Client>((ref) {
-  return InterceptedClient.build(interceptors: [
-    TalkerHttpLogger(
-      talker: talkerInstance,
-    ),
-  ]);
 });

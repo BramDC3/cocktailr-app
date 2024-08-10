@@ -1,0 +1,4 @@
+enum SenderModel {
+  user,
+  model,
+}

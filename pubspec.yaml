@@ -25,6 +25,7 @@ dependencies:
   talker_http_logger: 0.1.0-dev.8
   talker_riverpod_logger: 1.1.2
   theme_tailor_annotation: 3.0.1
+  uuid: 4.4.2
   vector_graphics: 1.1.11+1
   vector_math: 2.1.4
 
