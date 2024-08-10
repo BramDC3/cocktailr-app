@@ -4,7 +4,7 @@ class AppRouteNames {
 
   static const cocktails = 'cocktails';
   static const cocktailSearch = 'search';
-  static const profile = 'profile';
+  static const assistant = 'assistant';
 }
 
 class AppRoutes {
@@ -15,5 +15,5 @@ class AppRoutes {
   static String getCocktailSearchUrl() => '/${AppRouteNames.cocktails}/${AppRouteNames.cocktailSearch}';
   static String getCocktailSearchDetailUrl(int id) => '/${AppRouteNames.cocktails}/${AppRouteNames.cocktailSearch}/$id';
 
-  static String getProfileUrl() => '/${AppRouteNames.profile}';
+  static String getAssistantUrl() => '/${AppRouteNames.assistant}';
 }

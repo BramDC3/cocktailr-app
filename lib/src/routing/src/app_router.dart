@@ -1,6 +1,6 @@
+import 'package:cocktailr/src/features/assistant/assistant.dart';
 import 'package:cocktailr/src/features/cocktails/cocktails.dart';
 import 'package:cocktailr/src/features/home/home.dart';
-import 'package:cocktailr/src/features/profile/profile.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -53,8 +53,8 @@ final _router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/${AppRouteNames.profile}',
-              builder: (context, state) => const ProfileScreen(),
+              path: '/${AppRouteNames.assistant}',
+              builder: (context, state) => const AssistantScreen(),
             ),
           ],
         ),

@@ -20,17 +20,15 @@ class HomeScreen extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
-            icon: SvgAsset(assetName: 'assets/icons/ic_cocktail_inactive.svg'),
-            activeIcon: SvgAsset(assetName: 'assets/icons/ic_cocktail_active.svg'),
-            label: 'Cocktails',
-            tooltip: 'Show cocktails'
-          ),
+              icon: SvgAsset(assetName: 'assets/icons/ic_cocktail_inactive.svg'),
+              activeIcon: SvgAsset(assetName: 'assets/icons/ic_cocktail_active.svg'),
+              label: 'Cocktails',
+              tooltip: 'Show cocktails'),
           BottomNavigationBarItem(
-            icon: SvgAsset(assetName: 'assets/icons/ic_bartender_inactive.svg'),
-            activeIcon: SvgAsset(assetName: 'assets/icons/ic_bartender_active.svg'),
-            label: 'Bartender',
-            tooltip: 'Show bartender'
-          ),
+              icon: SvgAsset(assetName: 'assets/icons/ic_bartender_inactive.svg'),
+              activeIcon: SvgAsset(assetName: 'assets/icons/ic_bartender_active.svg'),
+              label: 'Bartender',
+              tooltip: 'Show bartender'),
         ],
         backgroundColor: colors.royal100,
         selectedLabelStyle: context.bottomNavBar,
@@ -46,7 +44,7 @@ class HomeScreen extends StatelessWidget {
   int _calculateSelectedIndex(BuildContext context) {
     final location = GoRouterState.of(context).uri.path;
 
-    if (location.startsWith(AppRoutes.getProfileUrl())) {
+    if (location.startsWith(AppRoutes.getAssistantUrl())) {
       return 1;
     }
 
@@ -55,7 +53,7 @@ class HomeScreen extends StatelessWidget {
 
   void _onItemTapped(int index, BuildContext context) {
     final location = switch (index) {
-      1 => AppRoutes.getProfileUrl(),
+      1 => AppRoutes.getAssistantUrl(),
       0 || _ => AppRoutes.getCocktailsUrl(),
     };
 
