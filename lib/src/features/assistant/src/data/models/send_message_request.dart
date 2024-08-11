@@ -5,7 +5,7 @@ import 'message_model.dart';
 
 part 'send_message_request.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class SendMessageRequest extends Equatable {
   final String newMessage;
   final List<MessageModel> history;

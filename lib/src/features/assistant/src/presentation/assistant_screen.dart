@@ -94,7 +94,7 @@ class _BodyState extends ConsumerState<_Body> {
       messages: messages,
       onSendPressed: (partialText) async {
         setState(() => _isLoading = true);
-        ref.read(assistantConversationProvider.notifier).sendMessage(partialText.text);
+        await ref.read(assistantConversationProvider.notifier).sendMessage(partialText.text);
         if (mounted) {
           setState(() => _isLoading = false);
         }

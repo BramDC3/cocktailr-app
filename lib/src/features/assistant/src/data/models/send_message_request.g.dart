@@ -17,5 +17,5 @@ SendMessageRequest _$SendMessageRequestFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$SendMessageRequestToJson(SendMessageRequest instance) =>
     <String, dynamic>{
       'newMessage': instance.newMessage,
-      'history': instance.history,
+      'history': instance.history.map((e) => e.toJson()).toList(),
     };
