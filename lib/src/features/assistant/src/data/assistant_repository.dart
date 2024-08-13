@@ -58,7 +58,24 @@ class AssistantRepository {
       },
     );
 
-    return (response.message, response.resources);
+    return (
+      _formatMessage(response.message),
+      response.resources,
+    );
+  }
+
+  String _formatMessage(String message) {
+    String formattedMessage = utf8.decode(message.runes.toList());
+
+    if (formattedMessage.startsWith('"')) {
+      formattedMessage = formattedMessage.substring(1);
+    }
+
+    if (formattedMessage.endsWith('"')) {
+      formattedMessage = formattedMessage.substring(0, formattedMessage.length - 1);
+    }
+
+    return formattedMessage;
   }
 }
 

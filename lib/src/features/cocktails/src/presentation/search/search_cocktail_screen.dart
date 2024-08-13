@@ -97,7 +97,11 @@ class _CocktailList extends ConsumerWidget {
 
         return ListView.separated(
           itemCount: cocktails.length,
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.only(
+            left: 16.0,
+            right: 16.0,
+            bottom: 24.0,
+          ),
           itemBuilder: (context, index) {
             final cocktail = cocktails[index];
             return _CocktailCard(cocktail: cocktail);

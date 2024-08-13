@@ -105,14 +105,17 @@ class _Body extends StatelessWidget {
         physics: const ClampingScrollPhysics(),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              _CocktailImage(cocktail: cocktail),
-              const SizedBox(height: 48.0),
-              _IngredientsSection(ingredients: cocktail?.ingredients ?? []),
-              const SizedBox(height: 56.0),
-              _AboutSection(text: cocktail?.history ?? ''),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 24.0),
+            child: Column(
+              children: [
+                _CocktailImage(cocktail: cocktail),
+                const SizedBox(height: 48.0),
+                _IngredientsSection(ingredients: cocktail?.ingredients ?? []),
+                const SizedBox(height: 56.0),
+                _AboutSection(text: cocktail?.history ?? ''),
+              ],
+            ),
           ),
         ),
       ),
