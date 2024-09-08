@@ -1,0 +1,43 @@
+### Test ###
+desc "Run all tests that don't require a physical device (= that run on a virtual machine). This includes unit, widget and golden tests."
+lane :run_vm_tests do
+  Dir.chdir("..") do
+    sh("fvm flutter test --machine")
+  end
+end
+
+### Android ###
+platform :android do
+  ### Build ###
+  desc "Build Android debug"
+  lane :build_debug do
+    Dir.chdir("..") do
+      sh("fvm flutter build apk --debug")
+    end
+  end
+
+  desc "Build Android release"
+  lane :build_release do
+    Dir.chdir("..") do
+      sh("fvm flutter build aab --release")
+    end
+  end
+end
+
+### iOS ###
+platform :ios do
+  ### Build ###
+  desc "Build iOS debug (for simulator)"
+  lane :build_debug do
+    Dir.chdir("..") do
+      sh("fvm flutter build ios --debug --simulator")
+    end
+  end
+
+  desc "Build iOS release"
+  lane :build_release do
+    Dir.chdir("..") do
+      sh("fvm flutter build ipa --release --export-options-plist ios/Runner/ExportOptions.plist")
+    end
+  end
+end

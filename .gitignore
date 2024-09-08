@@ -85,3 +85,7 @@ lib/generated_plugin_registrant.dart
 
 # FVM Version Cache
 .fvm/
+
+# Fastlane
+fastlane/report.xml
+fastlane/README.md
