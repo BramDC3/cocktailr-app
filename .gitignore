@@ -89,3 +89,10 @@ lib/generated_plugin_registrant.dart
 # Fastlane
 fastlane/report.xml
 fastlane/README.md
+
+# Firebase files
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+lib/firebase_options.dart
+.firebaserc
+firebase-debug.log
