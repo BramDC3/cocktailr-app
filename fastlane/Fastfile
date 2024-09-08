@@ -19,7 +19,24 @@ platform :android do
   desc "Build Android release"
   lane :build_release do
     Dir.chdir("..") do
-      sh("fvm flutter build aab --release")
+      sh("fvm flutter build apk --release")
+    end
+  end
+
+  ### Distribute ###
+  desc "Distribute to Firebase App Distribution"
+  lane :distribute_firebase do
+    Dir.chdir("..") do
+      android_artifact_path = File.expand_path("./build/app/outputs/flutter-apk/app-release.apk", Dir.pwd)
+      service_credentials_file = File.expand_path("./FIREBASE_APP_DISTRIBUTION_SERVICE_ACCOUNT_KEY.json", Dir.pwd)
+
+      firebase_app_distribution(
+        app: "1:30086613147:android:9d5c7c6b5005dcdddb1e3e",
+        service_credentials_file: service_credentials_file,
+        groups: "in-the-pocket",
+        android_artifact_type: "APK",
+        android_artifact_path: android_artifact_path,
+      )
     end
   end
 end
@@ -38,6 +55,22 @@ platform :ios do
   lane :build_release do
     Dir.chdir("..") do
       sh("fvm flutter build ipa --release --export-options-plist ios/Runner/ExportOptions.plist")
+    end
+  end
+
+  ### Distribute ###
+  desc "Distribute to Firebase App Distribution"
+  lane :distribute_firebase do
+    Dir.chdir("..") do
+      ipa_path = File.expand_path("./build/ios/ipa/cocktailr.ipa", Dir.pwd)
+      service_credentials_file = File.expand_path("./FIREBASE_APP_DISTRIBUTION_SERVICE_ACCOUNT.json", Dir.pwd)
+
+      firebase_app_distribution(
+        app: "1:30086613147:ios:6d5b0b44109feea8db1e3e",
+        service_credentials_file: service_credentials_file,
+        groups: "in-the-pocket",
+        ipa_path: ipa_path,
+      )
     end
   end
 end
