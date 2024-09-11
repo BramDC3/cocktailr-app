@@ -1,10 +1,10 @@
 name: release-workflow
-on: [push]
-# TODO:
-# on:
-#   push:
-#     branches:
-#       - release/*
+
+on:
+  push:
+    branches:
+      - release/*
+
 jobs:
   test:
     name: Run tests
