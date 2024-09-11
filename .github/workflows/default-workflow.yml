@@ -1,10 +1,8 @@
 name: default-workflow
-on: [push]
-# TODO:
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 jobs:
   test:
     name: Run tests
@@ -90,6 +88,4 @@ jobs:
 
       - name: Build debug
         run: bundle exec fastlane ios build_debug
-
-      # - name: Decode and save FIREBASE_APP_DISTRIBUTION_SERVICE_ACCOUNT.json
-      #   run: echo "${{ secrets.FIREBASE_APP_DISTRIBUTION_SERVICE_ACCOUNT_JSON }}" | base64 -d > ./FIREBASE_APP_DISTRIBUTION_SERVICE_ACCOUNT.json
+        

@@ -27,15 +27,15 @@ platform :android do
   desc "Distribute to Firebase App Distribution"
   lane :distribute_firebase do
     Dir.chdir("..") do
-      android_artifact_path = File.expand_path("./build/app/outputs/flutter-apk/app-release.apk", Dir.pwd)
-      service_credentials_file = File.expand_path("./FIREBASE_APP_DISTRIBUTION_SERVICE_ACCOUNT_KEY.json", Dir.pwd)
+      apk_path = File.expand_path("./build/app/outputs/flutter-apk/app-release.apk", Dir.pwd)
+      service_credentials_file = File.expand_path("./FIREBASE_APP_DISTRIBUTION_SERVICE_ACCOUNT.json", Dir.pwd)
 
       firebase_app_distribution(
         app: "1:30086613147:android:9d5c7c6b5005dcdddb1e3e",
         service_credentials_file: service_credentials_file,
         groups: "in-the-pocket",
         android_artifact_type: "APK",
-        android_artifact_path: android_artifact_path,
+        android_artifact_path: apk_path,
       )
     end
   end
@@ -43,6 +43,37 @@ end
 
 ### iOS ###
 platform :ios do
+  ### Certificates & Provisioning Profiles ###
+  desc "Run match command for the given type"
+  lane :match_for_type do |options|
+    app_store_connect_api_key_filepath = File.expand_path("./APP_STORE_CONNECT_API_KEY.p8", Dir.pwd)
+
+    app_store_connect_api_key = app_store_connect_api_key(
+      key_id: "W3A5H672YF",
+      issuer_id: "cbd3c437-ddc9-4d9c-a6e5-1618213abb22",
+      key_filepath: app_store_connect_api_key_filepath,
+      duration: 1200,
+      in_house: false,
+    )
+
+    match(
+      type: options[:type],
+      git_url: "git@github.com:BramDC3/cocktailr-app-match.git",
+      app_identifier: "com.crowncorp.cocktailr",
+      api_key: app_store_connect_api_key,
+    )
+  end
+
+  desc "Run match development"
+  lane :match_development do
+    match_for_type(type: "development")
+  end
+
+  desc "Run match adhoc"
+  lane :match_adhoc do
+    match_for_type(type: "adhoc")
+  end
+
   ### Build ###
   desc "Build iOS debug (for simulator)"
   lane :build_debug do
@@ -54,6 +85,10 @@ platform :ios do
   desc "Build iOS release"
   lane :build_release do
     Dir.chdir("..") do
+      setup_ci
+
+      match_adhoc
+
       sh("fvm flutter build ipa --release --export-options-plist ios/Runner/ExportOptions.plist")
     end
   end
