@@ -97,3 +97,6 @@ lib/firebase_options.dart
 .firebaserc
 firebase-debug.log
 FIREBASE_APP_DISTRIBUTION_SERVICE_ACCOUNT.json
+
+# App Store
+APP_STORE_CONNECT_API_KEY.p8

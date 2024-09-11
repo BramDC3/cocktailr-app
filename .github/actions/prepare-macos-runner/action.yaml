@@ -1,0 +1,23 @@
+name: "Prepare macOS runner"
+description: "Prepare macOS runner"
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: "3.1.1" # TODO: keep this somewhere where it's easy to change
+
+    - name: Install gems
+      shell: bash
+      run: bundle install
+
+    - name: Install FVM
+      shell: bash
+      run: |
+        brew tap leoafarias/fvm
+        brew install fvm
+
+    - name: Set up FVM
+      shell: bash
+      run: fvm use

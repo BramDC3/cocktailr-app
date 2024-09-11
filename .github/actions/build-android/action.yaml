@@ -1,0 +1,25 @@
+name: "Build Android"
+description: "Build Android"
+inputs:
+  type:
+    description: 'Build type (should be debug or release)'
+    required: true
+  google_services_json:
+    description: 'Base64 encoded google-services.json'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Decode and save google-services.json
+      shell: bash
+      run: echo "${{ inputs.google_services_json }}" | base64 -d > ./android/app/google-services.json
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17' # TODO: keep this somewhere where it's easy to change
+
+    - name: Build ${{ inputs.type }}
+      shell: bash
+      run: bundle exec fastlane android build_${{ inputs.type }}

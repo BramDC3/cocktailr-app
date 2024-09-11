@@ -12,19 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.1.1" # TODO: keep this somewhere where it's easy to change
-
-      - name: Install gems
-        run: bundle install
-
-      - name: Install FVM
-        run: curl -fsSL https://fvm.app/install.sh | bash
-
-      - name: Set up FVM
-        run: fvm use
+      - name: Prepare runner
+        uses: ./.github/actions/prepare-ubuntu-runner
 
       - name: Run virtual machine tests
         run: bundle exec fastlane run_vm_tests
@@ -36,22 +25,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.1.1" # TODO: keep this somewhere where it's easy to change
-
-      - name: Install gems
-        run: bundle install
-
-      - name: Install FVM
-        run: curl -fsSL https://fvm.app/install.sh | bash
-
-      - name: Set up FVM
-        run: fvm use
-
-      - name: Decode and save google-services.json
-        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 -d > ./android/app/google-services.json
+      - name: Prepare runner
+        uses: ./.github/actions/prepare-ubuntu-runner
 
       - name: Decode and save key.properties
         run: echo "${{ secrets.ANDROID_KEY_PROPERTIES }}" | base64 -d > ./android/key.properties
@@ -59,14 +34,11 @@ jobs:
       - name: Decode and save keystore
         run: echo "${{ secrets.COCKTAILR_UPLOAD_KEYSTORE_JKS }}" | base64 -d > ./android/app/cocktailr-upload-keystore.jks
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
       - name: Build release
-        run: bundle exec fastlane android build_release
+        uses: ./.github/actions/build-android
+        with:
+          type: release
+          google_services_json: ${{ secrets.GOOGLE_SERVICES_JSON }}
       
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
@@ -81,32 +53,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.1.1" # TODO: keep this somewhere where it's easy to change
-
-      - name: Install gems
-        run: bundle install
-
-      - name: Install FVM
-        run: |
-          brew tap leoafarias/fvm
-          brew install fvm
-
-      - name: Set up FVM
-        run: fvm use
-
-      - name: Decode and save GoogleServices-Info.plist
-        run: echo "${{ secrets.GOOGLESERVICE_INFO_PLIST }}" | base64 -d > ./ios/Runner/GoogleService-Info.plist
-
-      - name: Decode and save App Store Connect API key
-        run: echo "${{ secrets.APP_STORE_CONNECT_API_KEY }}" | base64 -d > ./APP_STORE_CONNECT_API_KEY.p8
+      - name: Prepare runner
+        uses: ./.github/actions/prepare-macos-runner
 
       - name: Set `MATCH_PASSWORD` environment variable
         run: echo "MATCH_PASSWORD=${{ secrets.MATCH_PASSWORD }}" >> $GITHUB_ENV
 
+      - name: Decode and save App Store Connect API key
+        run: echo "${{ secrets.APP_STORE_CONNECT_API_KEY }}" | base64 -d > ./APP_STORE_CONNECT_API_KEY.p8
+
+      - name: Decode and save GoogleServices-Info.plist
+        run: echo "${{ secrets.GOOGLESERVICE_INFO_PLIST }}" | base64 -d > ./ios/Runner/GoogleService-Info.plist
+
       - name: Build release
+        # TODO: Move SSH setup logic to a separate action or Fastfile
         run: |
           echo "${{ secrets.CERTIFICATES_REPO_SSH_KEY }}" > private_key
           chmod 600 private_key
@@ -122,7 +82,7 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: cocktailr-ipa-folder
+          name: ipa-folder
           path: ./build/ios/ipa/
 
   distribute_android:
@@ -132,13 +92,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.1.1" # TODO: keep this somewhere where it's easy to change
-
-      - name: Install gems
-        run: bundle install
+      - name: Prepare runner
+        uses: ./.github/actions/prepare-ubuntu-runner
 
       - name: Decode and save Firebase App Distribution service account
         run: echo "${{ secrets.FIREBASE_APP_DISTRIBUTION_SERVICE_ACCOUNT_JSON }}" | base64 -d > ./FIREBASE_APP_DISTRIBUTION_SERVICE_ACCOUNT.json
@@ -154,18 +109,13 @@ jobs:
 
   distribute_ios:
     name: Distribute iOS release
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     needs: [build_android, build_ios]
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.1.1" # TODO: keep this somewhere where it's easy to change
-
-      - name: Install gems
-        run: bundle install
+      - name: Prepare runner
+        uses: ./.github/actions/prepare-ubuntu-runner
 
       - name: Decode and save Firebase App Distribution service account
         run: echo "${{ secrets.FIREBASE_APP_DISTRIBUTION_SERVICE_ACCOUNT_JSON }}" | base64 -d > ./FIREBASE_APP_DISTRIBUTION_SERVICE_ACCOUNT.json
@@ -173,7 +123,7 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: cocktailr-ipa-folder
+          name: ipa-folder
           path: ./build/ios/ipa/
 
       - name: Distribute release

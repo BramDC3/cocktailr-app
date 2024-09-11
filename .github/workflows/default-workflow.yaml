@@ -1,0 +1,51 @@
+name: default-workflow
+on: [push]
+# on:
+#   push:
+#     branches:
+#       - main
+jobs:
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare runner
+        uses: ./.github/actions/prepare-ubuntu-runner
+
+      - name: Run virtual machine tests
+        run: bundle exec fastlane run_vm_tests
+
+  build_android:
+    name: Build Android debug
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare runner
+        uses: ./.github/actions/prepare-ubuntu-runner
+
+      - name: Build debug
+        uses: ./.github/actions/build-android
+        with:
+          type: debug
+          google_services_json: ${{ secrets.GOOGLE_SERVICES_JSON }}
+
+  build_ios:
+    name: Build iOS debug
+    runs-on: macos-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare runner
+        uses: ./.github/actions/prepare-macos-runner
+
+      - name: Decode and save GoogleServices-Info.plist
+        run: echo "${{ secrets.GOOGLESERVICE_INFO_PLIST }}" | base64 -d > ./ios/Runner/GoogleService-Info.plist
+
+      - name: Build debug
+        run: bundle exec fastlane ios build_debug
+        

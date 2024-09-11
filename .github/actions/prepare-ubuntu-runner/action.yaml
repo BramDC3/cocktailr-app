@@ -1,0 +1,21 @@
+name: "Prepare Ubuntu runner"
+description: "Prepare Ubuntu runner"
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: "3.1.1" # TODO: keep this somewhere where it's easy to change
+
+    - name: Install gems
+      shell: bash
+      run: bundle install
+
+    - name: Install FVM
+      shell: bash
+      run: curl -fsSL https://fvm.app/install.sh | bash
+
+    - name: Set up FVM
+      shell: bash
+      run: fvm use
