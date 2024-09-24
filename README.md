@@ -1,16 +1,42 @@
-# cocktailr
+# Cocktailr
 
-A new Flutter project.
+Cocktailr is an app for cocktail enthusiasts to discover new cocktail recipes.
+It also comes with Brina, a sassy, friendly bartender who assists you on your cocktail journey.
 
-## Getting Started
+## How to build the app
 
-This project is a starting point for a Flutter application.
+- Clone the repository
+- Install fvm (Flutter Version Manager) from [here](https://fvm.app/)
+- Run `fvm install` to install the Flutter version specified in the `.fvmrc` file
+- Run `fvm flutter pub get` to install the dependencies
+- Run `fvm flutter run` to run the app on your connected device or emulator
 
-A few resources to get you started if this is your first Flutter project:
+## CI/CD
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+The idea was to use GitHub, GitLab, Codemagic... any CI/CD platform that allows you to define, in code, what a / the pipeline(s) should look like. Fastlane is used to define lanes to test, build and distribute the app.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The platform defines the when and the what, Fastlane defines the how.
+
+### Flow
+Because this is a small project, the flow doesn't have to be very complicated. Feature branches are created which are then merged into main, but for small changes it's also allowed to push to main directly. Then, whenever enough value has been added, a new release branch is created and a new version of the app will be distributed.
+
+On push to main:
+- run tests
+- create debug build
+
+On push to release branch:
+- run tests
+- create release build
+- publish to Firebase app distribution
+
+## Architecture
+
+The app is built using the [Riverpod architecture](https://codewithandrea.com/articles/flutter-app-architecture-riverpod-introduction/). This architecture leans heavily on the [Riverpod package](https://riverpod.dev/), making the most of its reactive caching and data-binding features.
+
+## What's next?
+
+- App icon & splash screen
+- Crash reporting
+- Web app with WASM
+- General improvements to Brina
+- Feature to take a picture of ingredients you have and ask which cocktails you can make with them
