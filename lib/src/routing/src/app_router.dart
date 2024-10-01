@@ -4,6 +4,7 @@ import 'package:cocktailr/src/features/home/home.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'app_routes.dart';
 
@@ -27,6 +28,9 @@ final _cocktailDetailRoute = GoRoute(
 final _router = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: '/${AppRouteNames.cocktails}',
+  observers: [
+    SentryNavigatorObserver(),
+  ],
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, child) => HomeScreen(child: child),

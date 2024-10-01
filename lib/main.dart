@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger.dart';
 
 Future<void> main() async {
@@ -14,17 +15,22 @@ Future<void> main() async {
 
   await Firebase.initializeApp();
 
-  runApp(
-    ProviderScope(
-      observers: [
-        TalkerRiverpodObserver(
-          talker: talkerInstance,
-          settings: const TalkerRiverpodLoggerSettings(
-            printStateFullData: false,
+  await SentryFlutter.init(
+    (options) {
+      options.dsn = ''; // TODO:
+    },
+    appRunner: () => runApp(
+      ProviderScope(
+        observers: [
+          TalkerRiverpodObserver(
+            talker: talkerInstance,
+            settings: const TalkerRiverpodLoggerSettings(
+              printStateFullData: false,
+            ),
           ),
-        ),
-      ],
-      child: const CocktailrApp(),
+        ],
+        child: const CocktailrApp(),
+      ),
     ),
   );
 }

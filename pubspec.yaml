@@ -23,6 +23,7 @@ dependencies:
   http_interceptor: 2.0.0
   intersperse: 2.0.0
   json_annotation: 4.9.0
+  sentry_flutter: 8.9.0
   talker: 4.3.2
   talker_flutter: 4.3.2
   talker_http_logger: 0.1.0-dev.8
