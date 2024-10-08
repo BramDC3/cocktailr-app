@@ -39,6 +39,7 @@ jobs:
         with:
           type: release
           google_services_json: ${{ secrets.GOOGLE_SERVICES_JSON }}
+          env_file: ${{ secrets.ENV_FILE }}
       
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
@@ -55,6 +56,9 @@ jobs:
 
       - name: Prepare runner
         uses: ./.github/actions/prepare-macos-runner
+
+      - name: Decode and save .env file
+        run: echo "${{ secrets.ENV_FILE }}" | base64 -d > .env
 
       - name: Set `MATCH_PASSWORD` environment variable
         run: echo "MATCH_PASSWORD=${{ secrets.MATCH_PASSWORD }}" >> $GITHUB_ENV

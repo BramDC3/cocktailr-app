@@ -7,9 +7,16 @@ inputs:
   google_services_json:
     description: 'Base64 encoded google-services.json'
     required: true
+  env_file:
+    description: 'Base64 encoded .env file'
+    required: true
 runs:
   using: "composite"
   steps:
+    - name: Decode and save .env file
+      shell: bash
+      run: echo "${{ inputs.env_file }}" | base64 -d > .env
+
     - name: Decode and save google-services.json
       shell: bash
       run: echo "${{ inputs.google_services_json }}" | base64 -d > ./android/app/google-services.json
