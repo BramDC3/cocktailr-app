@@ -1,3 +1,4 @@
+import 'package:cocktailr/src/env/env.dart';
 import 'package:cocktailr/src/routing/routing.dart';
 import 'package:cocktailr/src/ui/ui.dart';
 import 'package:cocktailr/src/utils/utils.dart' show talkerInstance;
@@ -17,7 +18,7 @@ Future<void> main() async {
 
   await SentryFlutter.init(
     (options) {
-      options.dsn = ''; // TODO:
+      options.dsn = Env.sentryDsn;
     },
     appRunner: () => runApp(
       ProviderScope(

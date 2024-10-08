@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cocktailr/src/monitoring/monitoring.dart';
 import 'package:cocktailr/src/utils/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,6 +11,7 @@ class AssistantConversation extends AutoDisposeAsyncNotifier<List<AssistantMessa
   static const _tag = 'AssistantConversation';
 
   AssistantRepository get _assistantRepository => ref.watch(assistantRepositoryProvider);
+  CrashReportingService get _crashReportingService => ref.watch(crashReportingServiceProvider);
   TimeUtil get _timeUtil => ref.watch(timeUtilProvider);
   UuidUtil get _uuidUtil => ref.watch(uuidUtilProvider);
   Logger get _logger => ref.watch(loggerProvider);
@@ -29,29 +31,33 @@ class AssistantConversation extends AutoDisposeAsyncNotifier<List<AssistantMessa
   Future<void> sendMessage(String message) async {
     _logger.info(_tag, 'sendMessage(message: $message)');
 
-    final history = await future;
+    try {
+      final history = await future;
 
-    state = AsyncData([
-      ...history,
-      UserMessage(
-        id: _uuidUtil.v4(),
-        timestamp: _timeUtil.now(),
-        text: message,
-      ),
-    ]);
+      state = AsyncData([
+        ...history,
+        UserMessage(
+          id: _uuidUtil.v4(),
+          timestamp: _timeUtil.now(),
+          text: message,
+        ),
+      ]);
 
-    final (reply, resources) = await _assistantRepository.sendMessage(message, history);
-    final previousState = await future;
+      final (reply, resources) = await _assistantRepository.sendMessage(message, history);
+      final previousState = await future;
 
-    state = AsyncData([
-      ...previousState,
-      ModelMessage(
-        id: _uuidUtil.v4(),
-        timestamp: _timeUtil.now(),
-        text: reply,
-        resources: resources,
-      ),
-    ]);
+      state = AsyncData([
+        ...previousState,
+        ModelMessage(
+          id: _uuidUtil.v4(),
+          timestamp: _timeUtil.now(),
+          text: reply,
+          resources: resources,
+        ),
+      ]);
+    } catch (e, st) {
+      _crashReportingService.reportNonFatalError(e, st);
+    }
   }
 }
 
