@@ -12,14 +12,14 @@ platform :android do
   desc "Build Android debug"
   lane :build_debug do
     Dir.chdir("..") do
-      sh("fvm flutter build apk --debug")
+      sh("fvm flutter build apk --debug --dart-define-from-file=.env")
     end
   end
 
   desc "Build Android release"
   lane :build_release do
     Dir.chdir("..") do
-      sh("fvm flutter build apk --release")
+      sh("fvm flutter build apk --release --dart-define-from-file=.env")
     end
   end
 
@@ -78,7 +78,7 @@ platform :ios do
   desc "Build iOS debug (for simulator)"
   lane :build_debug do
     Dir.chdir("..") do
-      sh("fvm flutter build ios --debug --simulator")
+      sh("fvm flutter build ios --debug --simulator --dart-define-from-file=.env")
     end
   end
 
@@ -89,7 +89,7 @@ platform :ios do
 
       match_adhoc
 
-      sh("fvm flutter build ipa --release --export-options-plist ios/Runner/ExportOptions.plist")
+      sh("fvm flutter build ipa --release --export-options-plist ios/Runner/ExportOptions.plist --dart-define-from-file=.env")
     end
   end
 
