@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class JulepApi {
   static const _tag = 'JulepApi';
-  static const _baseUrl = 'julep-api-hazltuqnpq-ew.a.run.app';
+  // static const _baseUrl = 'julep-api-hazltuqnpq-ew.a.run.app';
+  static const _baseUrl = 'cocktailr-backend-dbof5rscta-ew.a.run.app';
 
   JulepApi(
     this._logger,

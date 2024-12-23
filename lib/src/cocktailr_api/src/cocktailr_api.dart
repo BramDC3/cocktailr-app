@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CocktailrApi {
   static const _tag = 'CocktailrApi';
-  static const _baseUrl = 'cocktailr-backend-ze4ei6k6ba-wl.a.run.app';
+  static const _baseUrl = 'cocktailr-backend-dbof5rscta-ew.a.run.app';
 
   CocktailrApi(
     this._logger,
