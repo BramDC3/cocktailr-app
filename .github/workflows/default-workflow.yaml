@@ -15,6 +15,12 @@ jobs:
       - name: Prepare runner
         uses: ./.github/actions/prepare-ubuntu-runner
 
+      - name: Generate Firebase options
+        uses: ./.github/actions/generate-firebase-options
+        with:
+          firebase_service_account_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          firebase_project_id: ${{ secrets.FIREBASE_PROJECT_ID }}
+
       - name: Run virtual machine tests
         run: bundle exec fastlane run_vm_tests
 
@@ -27,6 +33,12 @@ jobs:
 
       - name: Prepare runner
         uses: ./.github/actions/prepare-ubuntu-runner
+
+      - name: Generate Firebase options
+        uses: ./.github/actions/generate-firebase-options
+        with:
+          firebase_service_account_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          firebase_project_id: ${{ secrets.FIREBASE_PROJECT_ID }}
 
       - name: Build debug
         uses: ./.github/actions/build-android
@@ -44,6 +56,12 @@ jobs:
 
       - name: Prepare runner
         uses: ./.github/actions/prepare-macos-runner
+
+      - name: Generate Firebase options
+        uses: ./.github/actions/generate-firebase-options
+        with:
+          firebase_service_account_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          firebase_project_id: ${{ secrets.FIREBASE_PROJECT_ID }}
 
       - name: Decode and save .env file
         run: echo "${{ secrets.ENV_FILE }}" | base64 -d > .env
